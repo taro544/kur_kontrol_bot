@@ -8,30 +8,30 @@ import signal
 api_key = '4UDXO21HX6QAZ911'
 first_currency = "USD"
 second_currency = "TRY"
+baraj = 14
+url = 'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={sayi1}&to_currency={sayi2}&apikey={api_key}'.format(sayi1=first_currency,sayi2=second_currency,api_key=api_key)
+
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
-
 cls()
+
 def handler(signum, frame):
     cls()
     while True:
         cls()
         res = input("Cikis yapmak istiyor musunuz ? y/n ")
-        if res == 'y':
+        reskucuk = res.lower()
+        if reskucuk == 'y':
             cls()
             exit(1)
-        elif res == 'n':
-            cls()
+        elif reskucuk == 'n':
             print("Lutfen bekleyin")
             break
         else:
             print("Lutfen dogru harfi girin")
             time.sleep(2)
             continue
-
 signal.signal(signal.SIGINT, handler)
-
-
 
 def oran_hesaplama(url):
     my_request = urllib.request.urlopen(url)
@@ -49,24 +49,22 @@ def oran_hesaplama(url):
         del new_string4[Exchange1]
         Exchange2 =  new_string4.index("Exchange")
         Oran = new_string4[Exchange2+3]
-        #Oranf = float(Oran)
-
         return Oran
     else:
         return 0
-url = 'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={sayi1}&to_currency={sayi2}&apikey={api_key}'.format(sayi1=first_currency,sayi2=second_currency,api_key=api_key)
+
 
 while True:
     x = oran_hesaplama(url)
-    if float(x) >= 14:
+    if float(x) >= baraj:
         cls()
-        print("1 " +""+ first_currency + " = " +" " + x + second_currency)
-        print("izmir marsi")
+        print("1 " +""+ first_currency + " = " + str(baraj)+ " " + second_currency)
         break
     elif x == 0:
         cls()
         print("Limit bitti")
         time.sleep(100)
+        continue
     else:
         cls()
         print("1 " +" "+ first_currency + " = " + x + " "+second_currency)
